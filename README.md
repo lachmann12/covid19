@@ -25,15 +25,40 @@ The current reported cases are shown in the plot below. For China, which success
 
 ![Image description](https://github.com/lachmann12/covid19/blob/master/images/current_cases_fig1.png)
 
-Estimates derived from reported death rates indicat significanlty higher case numbers. The predicted deaths are shown below.
+Estimates derived from reported death rates indicate significanlty higher case numbers. The predicted deaths are shown below. The algorithm can also be used to predict the hospitalizations at future time points. The actual numbers will vary on death to hospitalization ratio. This method currently only calculates the new expected number of hospitalizations per day that will end in a fatality. The actual number of hospitalizations will be much higher than this predicted number.
 
 ![Image description](https://github.com/lachmann12/covid19/blob/master/images/predictions_fig4.png)
 
 
 ### Refinements and implementation details
 
-The algorithm uses an estimated death rate observed in South Korea. The CFR is currently reported to be 1.5%. Other countries report significanlty variable CFRs over time. This is most likely due to the under-reporting of cases caused by unavailable testing capacity.
+The algorithm uses an estimated death rate observed in South Korea. The CFR is currently reported to be 1.5%. Other countries report significanlty variable CFRs over time. This is most likely due to the under-reporting of cases caused by unavailable testing capacity. The picture below is already slightly outdated. The CFR in South Korea increased since. This is most likely due to long disease progressions ending fatally outnumber new cases.
 
 ![Image description](https://github.com/lachmann12/covid19/blob/master/images/country_compare.png)
 
 The algorithm relies on a benchmark country from which important parameters are derived. These parameters are the overall CFR (1.5%) and the relative risk per age group. South Korea reported variing CFRs with significantly higher risk in age groups older than 60.
+
+The algorithm uses demographic information to calculate a Vulnerability Factor (VF). It compares the relative suseptability of a country to COVID-19 compared to the South Korean population. Below is a comparison of three countries to South Korea. A country such as Italy, with a much older population than South Korea has a VF of 1.57. They are likely to have a significantly higher death rate. The US is comparable to South Korea with similar age structure. China has a much younger population, which should result in a much lower CFR.
+
+![Image description](https://github.com/lachmann12/covid19/blob/master/images/country_pop.png)
+
+### Comments
+
+This is for scientific purposes only. The error bars on the predictions are very large and can be off by a large amount. There is significant limitations and assumptions that had to be made which will make the predictions deviate from the true progression. The main driving force is the exponential growth of infected individuals. At a doubling rate every 3 days the model is volatile to small changes in parameters used. This method tries to make few assumptions and the predicted decay of growth rate only requires 2 parameters and seems to fit observations well. As more information becomes available the predictions should become more accurate.
+
+### Limitations
+
+Limitations This method makes a series of assumptions in order to adjust reported COVID-19 cases compared with the benchmark country (South Korea). As the pandemic is still evolving, many parameters are not sufficiently known.
+ 
+• Deaths are confirmed: It is assumed that if a death occurs due to COVID-19, the case will be confirmed. When there is under-reporting, the reported CFR would be lower than the true CFR.
+ 
+• The population is infected uniformly We assume that the probability of infection is uniformly distributed across all age groups. The probability of an 80-year-old person to become infected is equal to the probability of a 30-year-old to become infected.
+ 
+• Changes in healthcare load are not modeled The provided healthcare in countries is comparable. For developed countries such as Italy and South Korea, it is assumed that the population has similar access to treatment. The death rates reported by age group are thus applicable in all countries.
+
+• The virus is identical in all countries This is supported by the very low mutational rate of SARS-CoV-2, which allows conjecturing identical etiologies across countries (PMID 32027036).
+
+• Conservative modeling Our method relies on estimating future cumulative deaths for a period of at least 23 days. In most countries in this study there has been no observed change in growth rate up to the day of writing. The model assumes that the growth rate will start falling on the next day and follow our precomputed spline.
+
+### Authors
+Kathleen M. Jagidnik, Forest Ray, Federico M. Giorgi, Alexander Lachmann
