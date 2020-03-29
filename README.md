@@ -11,6 +11,9 @@ This code uses reported deaths for a given country and extrapolates expected dea
 A full description of the method can currently be found here:
 https://figshare.com/s/758084c4fc684ee18a8f
 
+A version of an executable python notebook is available on Kaggle:
+https://www.kaggle.com/lachmann12/predict-exponential
+
 ### Predicting behavioral change in COVID-19 infected populations
 
 In order to accurately estimate the response of a population to the virus we combine information from China, Italy, and Iran. These three countries underwent through significant lockdowns which affect the growth rate to decay over time. 
