@@ -61,4 +61,4 @@ Limitations This method makes a series of assumptions in order to adjust reporte
 • Conservative modeling Our method relies on estimating future cumulative deaths for a period of at least 23 days. In most countries in this study there has been no observed change in growth rate up to the day of writing. The model assumes that the growth rate will start falling on the next day and follow our precomputed spline.
 
 ### Authors
-Kathleen M. Jagidnik, Forest Ray, Federico M. Giorgi, Alexander Lachmann
+Kathleen M. Jagodnik, Forest Ray, Federico M. Giorgi, Alexander Lachmann
