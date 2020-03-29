@@ -275,3 +275,132 @@ def extrapolateDeaths(country, fitrate, intervention, timescale=50):
     str_date = [d.strftime('%m/%d/%y') for d in datelist]
     
     return(pd.DataFrame(data=predicted_deaths, index=str_date))
+
+def getallMGR(d_shift):
+    countries = cases.iloc[:,1].unique()
+    countries.sort()
+
+    gr_list = list()
+    country_name = list()
+
+    for country in countries:
+        ma = np.where(cases['Country/Region'] == country)[0]
+        d_count = deaths.iloc[ma, 4:].sum(axis=0)
+
+        if np.max(d_count) > 50:
+            mgr = getMGR(country, d_shift)
+            gr_list.append(mgr)
+            country_name.append(country)
+
+    df = pd.DataFrame(data=gr_list, index=country_name)
+    return(df)
+
+def findDecayShift(growthrates, decay_spline):
+    decay_shift = 0
+    while float(list(growthrates)[-1]) < float(list(decay_spline)[decay_shift]):
+        decay_shift = decay_shift +1
+        if decay_shift-1 > len(decay_spline):
+            break
+    return(decay_shift)
+
+
+country1 = "Italy"
+country2 = "China"
+country3 = "Iran"
+
+gr1 = list(calculateGR(country1, 23))
+gr2 = list(calculateGR(country2, 23))
+gr3 = list(calculateGR(country3, 23))
+
+g1 = gr1[9:len(gr1)]
+g2 = gr2
+g3 = gr3[2:len(gr3)]
+
+plt.figure(figsize=(12,7))
+plt.plot(g2, label="Death rate ("+country2+")")
+plt.plot(g1, label="Death rate ("+country1+")")
+plt.plot(g3, label="Death rate ("+country3+")")
+
+plt.xticks(rotation=60)
+
+from scipy import optimize
+
+def func(x, a, b):
+    return a * np.exp(-b * x)+1
+
+
+x = list(range(0,len(g1)))+list(range(0, len(g2)))
+y = list(g1+g2)
+#x = list(range(0,len(g1)))+list(range(0, len(g2)))+list(range(0, len(g3)))
+#y = list(g1+g2+g3)
+
+#x = list(range(0, len(g2)-3))
+popt, params_covariance = optimize.curve_fit(func, x[3:len(x)], y[3:len(y)], p0=[2, 2])
+
+xrange = 200
+fit_rate = func(np.array(list(range(0, xrange))), *popt)
+
+print(popt)
+
+plt.plot(np.array(list(range(0,xrange))), fit_rate, 'r--', label="Fitted Curve", linewidth=4)
+
+plt.ylabel("growth rate")
+plt.xlabel("days of growth second growth phase")
+
+plt.legend()
+
+
+
+
+country = "US"
+ma = np.where(cases["Country/Region"] == country)[0]
+c_count_1 = cases.iloc[ma, 4:].sum(axis=0)
+d_count_1 = deaths.iloc[ma, 4:].sum(axis=0)
+dr_c1 = d_count_1 / c_count_1
+d_cases = np.where(d_count_1 > 10)[0]
+sds2 = d_count_1[d_cases]
+
+ggr = calculateGR(country, 0)
+
+decay_position = -findDecayShift(ggr, fit_rate)
+print(decay_position)
+exp_d = extrapolateDeaths(country, fit_rate, decay_position, timescale=80)
+
+plt.figure(figsize=(10,6))
+ax1 = plt.subplot(1,1,1)
+
+
+plt.ylim(top=(list(exp_d.iloc[:,0])[-1]+500))
+
+res1, = ax1.plot(sds2, linewidth=4, label="deaths")
+
+res2, = ax1.plot(c_count_1[d_cases], linewidth=4, label="reported cases")
+
+res3, = ax1.plot(exp_d[1:len(exp_d)], 'r--', label="Extrapolated deaths", linewidth=4)
+
+
+l1 = np.array(([0]+list(exp_d))) - np.array((list(exp_d)+[0]))
+
+
+plt.xticks(rotation=60)
+
+s1 = list(exp_d.iloc[:,0])+[0]
+s2 = [0]+list(exp_d.iloc[:,0])
+
+ax2 = ax1.twinx()
+dd = (np.array(s1)-np.array(s2))[1:(len(s1)-1)]
+res4, = ax2.plot(range(len(sds2)-10,(len(dd)-10+len(sds2))),dd, 'g--', linewidth=4, label="predicted hospitalizations")
+
+for label in ax1.xaxis.get_ticklabels()[::1]:
+    label.set_visible(False)
+
+for label in ax1.xaxis.get_ticklabels()[::8]:
+    label.set_visible(True)
+
+    
+plt.title(country)
+ax1.set_ylabel('cases', color="black")
+color = 'green'
+ax2.set_ylabel('expected hospitalizations with fatal outcome', color=color)
+ax2.tick_params(axis='y', labelcolor=color)
+plt.legend(handles=[res1, res2, res3, res4], fancybox = True)
