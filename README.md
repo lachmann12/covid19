@@ -30,7 +30,7 @@ The current reported cases are shown in the plot below. For China, which success
 
 Estimates derived from reported death rates indicate significanlty higher case numbers. The predicted deaths are shown below. The algorithm can also be used to predict the hospitalizations at future time points. The actual numbers will vary on death to hospitalization ratio. This method currently only calculates the new expected number of hospitalizations per day that will end in a fatality. The actual number of hospitalizations will be much higher than this predicted number.
 
-![Image description](https://github.com/lachmann12/covid19/blob/master/images/predictions_fig4.png)
+![Image description](https://github.com/lachmann12/covid19/blob/master/images/country_predictions.png)
 
 
 ### Refinements and implementation details
