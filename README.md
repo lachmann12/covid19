@@ -9,7 +9,7 @@ For healthcare systems worldwide it is important to know the expected number of 
 This code uses reported deaths for a given country and extrapolates expected deaths using known growth rate dynamics from other countries. The average time of death after infection is estimated to be 23 days. Deaths reported today mean that this number of people got infected with COVID-19 23 days ago. The algorithm uses the case fatality rate (CFR) to predict the actual cases. This number will be more accurate than the confirmed cases as they are in most countries under-reported by an order of magnitude.
 
 A full description of the method can currently be found here:
-https://figshare.com/s/758084c4fc684ee18a8f
+https://www.medrxiv.org/content/10.1101/2020.03.14.20036178v2.article-metrics
 
 A version of an executable python notebook is available on Kaggle:
 https://www.kaggle.com/lachmann12/predict-exponential
