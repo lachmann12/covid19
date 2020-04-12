@@ -14,7 +14,7 @@ https://www.medrxiv.org/content/10.1101/2020.03.14.20036178v2.article-metrics
 A version of an executable python notebook is available on Kaggle:
 https://www.kaggle.com/lachmann12/predict-exponential
 
-There is a live API for direct programmatic access to predictions. The API returns JSON documents. 
+There is a live API for direct programmatic access to predictions. The API returns JSON documents. The server is experimental.
 
 ### List all countries for which predictions are available
 http://34.226.139.235/listcountries
