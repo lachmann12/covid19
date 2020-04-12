@@ -14,9 +14,13 @@ RUN apt-get -y install docker.io
 RUN pip install Flask requests werkzeug Flask_cors waitress
 RUN pip install numpy pandas
 RUN pip install Flask requests
+RUN pip install scipy
+RUN pip install statistics
 
 ADD app.py /home/app.py
+ADD utils.py /home/utils.py
 ADD templates /home/templates
+COPY data /home/data
 
 EXPOSE 5000
 WORKDIR /home
