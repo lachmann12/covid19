@@ -14,6 +14,14 @@ https://www.medrxiv.org/content/10.1101/2020.03.14.20036178v2.article-metrics
 A version of an executable python notebook is available on Kaggle:
 https://www.kaggle.com/lachmann12/predict-exponential
 
+There is a live API for direct programmatic access to predictions. The API returns JSON documents. 
+
+### List all countries for which predictions are available
+http://34.226.139.235/listcountries
+
+### Return information for the specified country
+http://34.226.139.235/country?name=Italy
+
 ### Predicting behavioral change in COVID-19 infected populations
 
 In order to accurately estimate the response of a population to the virus we combine information from China, Italy, and Iran. These three countries underwent through significant lockdowns which affect the growth rate to decay over time. 
